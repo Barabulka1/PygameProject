@@ -332,7 +332,7 @@ if __name__ == '__main__':
     start_screen(clc, ["ЗАСТАВКА", "",
                   "Правила игры",
                   "WASD - перемещение",
-                  "SPACE - стрельба", "RB - спелл", "R - призвать существ"], size)
+                  "ЛКМ - стрельба", "ПКМ - спелл", "R - призвать существ"], size)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -340,24 +340,9 @@ if __name__ == '__main__':
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == pygame.BUTTON_RIGHT:
                     hero.spell()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    for e in enemies:
-                        e.kill()
-                    enemies = [BCalwan([100, 100], board, enemies_sprites), SCalwan([100, 300], board, enemies_sprites),
-                               Calwan([300, 100], board, enemies_sprites)]
-                    mods[0] += 0.2
-                    mods[1] += 1
-                    mods[2] += 0.1
-
-                    hero.health += 180
-                    if hero.health > hero.max_health:
-                        hero.health = hero.max_health
-
-                elif event.key == pygame.K_SPACE:
+                elif event.button == pygame.BUTTON_LEFT:
                     bullets.append(Bullet(8, (hero.rect.x, hero.rect.y), 1, hero.damage, board, "cartridge2.png", bullet_sprites,
                                           mouse_x=pygame.mouse.get_pos()[0], mouse_y=pygame.mouse.get_pos()[1]))
-        #
         screen.fill(pygame.Color('black'))
         screen.fill("#444444", (0, 680, 500, 20))
         screen.fill("#FF0000", (0, 680, hero.health * (500 / hero.max_health), 20))
@@ -405,7 +390,7 @@ if __name__ == '__main__':
             if level % 5 == 0:
                 board = Board(700, 600, 10, screen, 50, 50)
                 hero.board = board
-                if board.item_inside([hero.rect.x, hero.rect.y], (hero.rect.width, hero.rect.height)):
+                if not board.item_inside([hero.rect.x, hero.rect.y], (hero.rect.width, hero.rect.height)):
                     x1 = hero.rect.x
                     x2 = hero.rect.x
                     while True:
